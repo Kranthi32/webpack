@@ -28,7 +28,7 @@ const serverConfig = {
         clean: true
     },
      mode: 'development',
-    //target: 'node',
+    target: 'node',
     
     //externals: [nodeExternals()],
     //devtool : 'inline-source-map',
