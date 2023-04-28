@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const svgToMiniDataURI = require('mini-svg-data-uri');
 const glob = require('glob');
 
 const styleFiles = glob.sync('./Client/Style/User Style/*.css');
@@ -23,13 +24,13 @@ const serverConfig = {
     entry: './app.js',
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'app.js',
+        filename: '[name].js',
         clean: true
     },
-    // mode: 'development',
-    target: 'node',
+     mode: 'development',
+    //target: 'node',
     
-    externals: [nodeExternals()],
+    //externals: [nodeExternals()],
     //devtool : 'inline-source-map',
     plugins: [
         new CopyWebpackPlugin({
@@ -62,6 +63,7 @@ const clientConfig = {
     mode: 'development',
     devtool: 'inline-source-map', //generate source maps for debugging
     entry: {
+        'src/index' : './Client/src/index.js',
         'modules/Login/Login': './Client/modules/Login/Login.js',
         'modules/Login/LoginService': './Client/modules/Login/LoginService.js',
         'modules/ApiConfiguration/Application_Link_Setting': './Client/modules/ApiConfiguration/Application_Link_Setting.js',
@@ -138,7 +140,7 @@ const clientConfig = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules|Client\/Plugins | .\/Client\/Plugins)/,
+                exclude: /(.\/node_modules)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -155,17 +157,32 @@ const clientConfig = {
             // {
             //     test: /\.(jpe?g|png|gif|svg)$/, type: 'asset/resource',
             // },
+            // {
+            //     test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+            //     use: [
+            //         {
+            //             loader: 'file-loader',
+            //             options: {
+            //                 name: '[name].[ext]',
+            //                 outputPath: 'fonts/',
+            //             },
+            //         },
+            //     ],
+            // },
+
             {
-                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'fonts/',
-                        },
-                    },
-                ],
+                test: /\.svg/,
+                type: 'asset/inline',
+                generator: {
+                    dataUrl: content => {
+                        content = content.toString();
+                        return svgToMiniDataURI(content);
+                    }
+                },
+                // options: {
+                //     name: '[name].[ext]',
+                //     outputPath: 'fonts/',
+                // },
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -184,7 +201,7 @@ const clientConfig = {
                 exclude: /(node_modules| .\/node_modules )/,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: 'url-loader',
 
                         options: {
                             name: '[name].[ext]',
@@ -447,7 +464,7 @@ const clientConfig = {
         new MiniCssExtractPlugin({ 
             filename: "[name].css",
             linkType: false, 
-            chunkFilename: './Client/Style/User Style/[id].css',
+            //chunkFilename: './Client/Style/User Style/[id].css',
             //outputPath: 'Style/User Style/' // This is the path where the CSS files will be saved
         }),
         new CopyWebpackPlugin({
@@ -471,7 +488,7 @@ const clientConfig = {
             //'multiselect': 'bootstrap-multiselect/dist/js/bootstrap-multiselect',
            // '@src': path.resolve(__dirname, './Client/')
         },
-        extensions: ['.js', '.json', '.wasm'],
+        //extensions: ['.js', '.json', '.wasm'],
         // fallback: {
         //     stream: require.resolve('stream-browserify')
         //   }
