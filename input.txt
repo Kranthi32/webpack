@@ -1,0 +1,24 @@
+Straeams : handling of large amounts of data. They are essentially a way to read or write data piece by piece, instead of loading the entire dataset into memory all at once. This can be particularly useful when working with files, network sockets, or any other source of data that may be too large to hold in memory.
+
+Node.js provides four types of streams: Readable, Writable, Duplex, and Transform. Each type of stream is used for a specific purpose and can be used in combination to form complex data pipelines.
+
+Here is a brief overview of each type of stream:
+
+Readable Stream: This type of stream is used for reading data. It emits 'data' events as new data becomes available, and it emits an 'end' event when there is no more data to be read.
+
+Writable Stream: This type of stream is used for writing data. It provides a 'write' method that can be used to write data to the stream, and it emits 'drain' events to indicate when it is safe to write more data.
+
+Duplex Stream: This type of stream can be used for both reading and writing data. It combines the functionality of Readable and Writable streams.
+
+Transform Stream: This type of stream is used to modify or transform data as it passes through the stream. It can be used to implement operations like compression or encryption.
+
+Streams can be used in many different scenarios in Node.js, including file I/O, network communication, and data processing. They are also used extensively in the Node.js core modules, like the HTTP and TCP modules, to handle network communication.
+
+To work with streams in Node.js, you typically create a new stream object and then use methods like 'pipe()' or 'on()' to handle data as it passes through the stream. It's important to understand the different events and methods provided by each type of stream to effectively work with them.
+
+
+
+
+# npm init -y
+
+# npm i express
