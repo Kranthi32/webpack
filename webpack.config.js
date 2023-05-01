@@ -197,7 +197,7 @@ const clientConfig = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: './Client/Plugins', to: 'Plugins' },
-               // { from: './Client/Styles', to: 'Styles' },
+               { from: './Client/Styles', to: 'Styles' },
                 
 
             ]
